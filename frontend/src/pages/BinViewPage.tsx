@@ -1,6 +1,6 @@
 import { Link, useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
-import { getBin } from "./binViewService";
+import { getBin } from "./BinViewService";
 
 const BinViewPage = () => {
   const { binRoute } = useParams<{ binRoute: string }>();
@@ -25,7 +25,7 @@ const BinViewPage = () => {
 
   useEffect(() => {
     if (!binRoute) return;
-    const token = localStorage.getItem(binRoute);
+    const token = localStorage.getItem(`basket_${binRoute}`);
     if (!token) return;
     getBin(binRoute, token).then((data) => {
       setBin(data);
