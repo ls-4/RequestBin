@@ -1,7 +1,7 @@
 import { createBrowserRouter } from "react-router-dom";
 import AppLayout from "./AppLayout";
 import BinViewPage from "../pages/BinViewPage";
-import BinsPage from "../pages/BinsPage";
+import BinsPage from "../pages/BinsPage/BinsPage";
 
 export const router = createBrowserRouter([
   {
