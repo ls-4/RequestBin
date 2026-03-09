@@ -5,3 +5,11 @@ export interface Bin {
   view_url: string;
   token: string;
 }
+
+export interface CreateBinPayload {
+  bin_route: string;
+  send_url: string;
+  view_url: string;
+  token: string;
+}
+
