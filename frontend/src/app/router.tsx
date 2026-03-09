@@ -14,7 +14,7 @@ export const router = createBrowserRouter([
       },
       {
         element: <BinViewPage />,
-        path: "bins/:binId",
+        path: "/bins/:binRoute",
       },
     ],
   },
