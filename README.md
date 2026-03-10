@@ -78,6 +78,7 @@ npm run dev
     {
       "method": "POST",
       "created_at": "2026-03-07 19:12:45",
+      "path": "/in/abc123",
       "headers": { "content-type": "application/json" },
       "params": { "category": "webhooks" },
       "body": { "example": true }
@@ -94,4 +95,14 @@ npm run dev
 - 401 `{"error":"Unauthorized: Token invalid"}`
 - 404 `{"error":"Bin with route <binRoute> not found."}`
 
-### DELETE /bins/:binRoute (WIP)
+### DELETE /bins/:binRoute
+- Delete a bin and all requests
+  - Requires header: `Authorization: Bearer <token>`
+
+**Response: 204**
+- No content
+
+**Unsuccessful responses**
+- 401 `{"error":"Unauthorized: No token provided"}`
+- 401 `{"error":"Unauthorized: Token invalid"}`
+- 404 `{"error":"Bin with route <binRoute> not found."}`
