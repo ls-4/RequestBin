@@ -2,7 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import type { Request, Response, NextFunction } from 'express';
 import { ApiError } from './errors.js';
-import { createBin } from './services/bins.js';
+import { createBin, deleteBin } from './services/bins.js';
 import { saveRequestToBin, getRequestsInBin } from './services/requests.js';
 
 const app = express();
@@ -51,7 +51,10 @@ app.get('/bins/:binRoute', async (req, res) => {
 });
 
 app.delete('/bins/:binRoute', async (req, res) => {
+  const binRoute = req.params.binRoute;
 
+  await deleteBin(binRoute, req);
+  res.sendStatus(204);
 });
 
 export default app;
