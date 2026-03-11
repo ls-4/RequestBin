@@ -1,8 +1,8 @@
 import { Link, useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
-import { getBin } from './BinViewService';
-import type { BinRequest } from '../types/request-bin';
-import './BinViewPage.css';
+import { getBin } from "./BinViewService";
+import type { BinRequest } from "../types/request-bin";
+import "./BinViewPage.css";
 
 const methodClass = (method: string): string => {
   const map: Record<string, string> = {
@@ -21,25 +21,27 @@ const formatDateTime = (datetime: string) => {
 };
 
 const BinViewPage = () => {
-  const { binRoute } = useParams<{ binRoute: string }>()
+  const { binRoute } = useParams<{ binRoute: string }>();
   const [bin, setBin] = useState({ bin_route: "", send_url: "" });
   const [requests, setRequests] = useState<BinRequest[]>([]);
   const [copied, setCopied] = useState(false);
   const [expandedBodies, setExpandedBodies] = useState<Set<number>>(new Set());
 
   useEffect(() => {
-  if (!binRoute) return;
-  const token = localStorage.getItem(`basket_${binRoute}`);
-  console.log("binRoute:", binRoute);
-  console.log("token:", token);
-  if (!token) return;
-  getBin(binRoute, token).then(data => {
-    setBin({ ...data, send_url: `/in/${data.bin_route}` });
-    setRequests(data.requests);
-  }).catch((error) => {
-    console.error("getBin failed:", error);
-  });
-}, []);
+    if (!binRoute) return;
+    const token = localStorage.getItem(`basket_${binRoute}`);
+    console.log("binRoute:", binRoute);
+    console.log("token:", token);
+    if (!token) return;
+    getBin(binRoute, token)
+      .then((data) => {
+        setBin({ ...data, send_url: `/in/${data.bin_route}` });
+        setRequests(data.requests);
+      })
+      .catch((error) => {
+        console.error("getBin failed:", error);
+      });
+  }, []);
 
   return (
     <div className="bin-view-page">
