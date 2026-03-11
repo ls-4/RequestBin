@@ -30,7 +30,9 @@ app.use((err: any, req: Request, res: Response, next: NextFunction) => {
 
 // create bin
 app.post('/bins', async (req: Request, res: Response) => {
-    const createBinResponse = await createBin();
+    const { bin_route, token } = req.body ?? {};
+
+    const createBinResponse = await createBin(bin_route, token);
     res.status(201).json(createBinResponse);
 });
 

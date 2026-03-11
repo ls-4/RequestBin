@@ -46,6 +46,14 @@ npm run dev
 ### POST /bins
 - Create bin
 
+**Request body**
+```json
+{
+  "bin_route": "abc123",
+  "token": "sk_92fj3k1"
+}
+```
+
 **Response: 201**
 ```json
 {
@@ -54,7 +62,13 @@ npm run dev
 }
 ```
 **Note**
+- `bin_route` and `token` are provided by the client and returned as-is.
 - Save both bin_route and token as they are needed to view the bin.
+
+**Unsuccessful responses**
+- 400 `{"error":"Invalid JSON: "bin_route" and "token" are required fields."}`
+- 400 `{"error":"Invalid JSON: "bin_route" and "token" must be strings."}`
+- 409 `{"error":"Bin with route <binRoute> already exists."}`
 
 ### ALL /in/:binRoute
 - Collect webhook request in bin (accepts any method).
