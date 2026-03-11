@@ -2,10 +2,17 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { createBin } from "./services";
 import { generateBinId } from "./utils";
+<<<<<<< HEAD
 import { BinPageLayout } from "./components/layout/BinPageLayout";
 import { PageHeader } from "./components/layout/PageHeader";
 import { CreateBinPanel } from "./components/bins/CreateBinPanel";
 import { BinCard } from "./components/bins/BinCard";
+=======
+import { BinPageLayout } from "../../components/layout/BinPageLayout";
+import { PageHeader } from "../../components/layout/PageHeader";
+import { CreateBinPanel } from "../../components/bins/CreateBinPanel";
+import { BinCard } from "../../components/bins/BinCard";
+>>>>>>> c0da4cf (WIP: bin page UI v2 safety snapshot)
 import "./BinsPage.css";
 
 const BINS_STORAGE_PREFIX = "basket_";

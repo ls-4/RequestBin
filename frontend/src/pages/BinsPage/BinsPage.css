@@ -7,10 +7,17 @@
 .bins-page__empty {
   padding: 28px 20px;
   border-radius: 16px;
+<<<<<<< HEAD
   border: 1px dashed #e5e7eb;
   background-color: #f9fafb;
   text-align: center;
   color: #6b7280;
+=======
+  border: 1px dashed #e2e8f0;
+  background-color: #f8fafc;
+  text-align: center;
+  color: #64748b;
+>>>>>>> c0da4cf (WIP: bin page UI v2 safety snapshot)
   font-size: 14px;
 }
 
