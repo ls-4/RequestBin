@@ -1,16 +1,17 @@
 import { ApiError } from '../errors.js';
 import type { Request } from 'express';
 import type { CreateBinAPIResponse } from '../types/types.js';
+import { nanoid } from 'nanoid';
 
 import db from '../services/db/index.js';
 
-export const createBin = async (bin_route: unknown, token: unknown): Promise<CreateBinAPIResponse> => {
-  if (!bin_route || !token) {
-    throw new ApiError(400, 'Invalid JSON: "bin_route" and "token" are required fields.');
+export const createBin = async (bin_route: unknown): Promise<CreateBinAPIResponse> => {
+  if (!bin_route) {
+    throw new ApiError(400, 'Invalid JSON: "bin_route" is required.');
   }
 
-  if (typeof bin_route !== 'string' || typeof token !== 'string') {
-    throw new ApiError(400, 'Invalid JSON: "bin_route" and "token" must be strings.');
+  if (typeof bin_route !== 'string') {
+    throw new ApiError(400, 'Invalid JSON: "bin_route" must be a string.');
   }
 
   const existing = await db.bins.getByRoute(bin_route);
@@ -18,6 +19,7 @@ export const createBin = async (bin_route: unknown, token: unknown): Promise<Cre
     throw new ApiError(409, `Bin with route ${bin_route} already exists.`);
   }
 
+  const token = nanoid();
   await db.bins.create(bin_route, token);
 
   return {

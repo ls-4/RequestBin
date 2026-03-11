@@ -30,10 +30,10 @@ app.use((err: any, req: Request, res: Response, next: NextFunction) => {
 
 // create bin
 app.post('/bins', async (req: Request, res: Response) => {
-    const { bin_route, token } = req.body ?? {};
+  const { bin_route } = req.body ?? {};
 
-    const createBinResponse = await createBin(bin_route, token);
-    res.status(201).json(createBinResponse);
+  const createBinResponse = await createBin(bin_route);
+  res.status(201).json(createBinResponse);
 });
 
 // collect webhook request into bin
@@ -52,6 +52,7 @@ app.get('/bins/:binRoute', async (req, res) => {
   res.status(200).json(getBinResponse);
 });
 
+// delete bin and its requests
 app.delete('/bins/:binRoute', async (req, res) => {
   const binRoute = req.params.binRoute;
 
