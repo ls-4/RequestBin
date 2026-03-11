@@ -1,6 +1,7 @@
 import { useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { getBin } from './BinViewService';
+import type { BinRequest } from '../types/request-bin';
 import './BinViewPage.css';
 
 const methodClass = (method: string): string => {
@@ -19,54 +20,24 @@ const formatDateTime = (datetime: string) => {
   return { date, time };
 };
 
-const prettyJson = (raw: string): string => {
-  try {
-    return JSON.stringify(JSON.parse(raw), null, 2);
-  } catch {
-    return raw;
-  }
-};
-
 const BinViewPage = () => {
-  const { binRoute } = useParams<{ binRoute: string }>();
-
-  const mockBin = {
-    bin_route: "abc123",
-    send_url: "/in/abc123",
-    requests: [
-      {
-        id: 1,
-        method: "POST",
-        path: "/in/abc123",
-        created_at: "2026-03-08 10:00:00",
-        headers: { "content-type": "application/json", "user-agent": "Webhook-Service/1.0" },
-        body: { raw: '{"event": "payment.succeeded", "data": {"id": "pay_9k2m1n0p", "amount": 4900}}' }
-      },
-      {
-        id: 2,
-        method: "GET",
-        path: "/in/abc123",
-        created_at: "2026-03-08 09:45:00",
-        headers: { accept: "*/*" },
-        body: { raw: "" }
-      }
-    ]
-  };
-
-  const [bin, setBin] = useState(mockBin);
-  const [requests, setRequests] = useState(mockBin.requests);
+  const { binRoute } = useParams<{ binRoute: string }>()
+  const [bin, setBin] = useState({ bin_route: "", send_url: "" });
+  const [requests, setRequests] = useState<BinRequest[]>([]);
 
   useEffect(() => {
-    if (!binRoute) return;
-    const token = localStorage.getItem(`basket_${binRoute}`);
-    if (!token) return;
-    getBin(binRoute, token).then(data => {
-      setBin({ ...data, send_url: `/in/${data.bin_route}` });
-      setRequests(data.requests);
-    }).catch((error) => {
-      console.error("getBin failed:", error);
-    });
-  }, []);
+  if (!binRoute) return;
+  const token = localStorage.getItem(`basket_${binRoute}`);
+  console.log("binRoute:", binRoute);
+  console.log("token:", token);
+  if (!token) return;
+  getBin(binRoute, token).then(data => {
+    setBin({ ...data, send_url: `/in/${data.bin_route}` });
+    setRequests(data.requests);
+  }).catch((error) => {
+    console.error("getBin failed:", error);
+  });
+}, []);
 
   return (
     <div className="bin-view-page">
@@ -105,7 +76,7 @@ const BinViewPage = () => {
         {requests.map((request, index) => {
           const { date, time } = formatDateTime(request.created_at);
           return (
-            <article key={request.id ?? index} className={`bin-view-request bin-view-request--${request.method}`}>
+            <article key={index} className={`bin-view-request bin-view-request--${request.method}`}>
 
               {/* Left: method + date + time */}
               <div className="bin-view-request-meta">
@@ -170,7 +141,7 @@ const BinViewPage = () => {
                 </section>
 
                 {/* Body */}
-                {request.body.raw && (
+                {request.body && Object.keys(request.body).length > 0 && (
                   <section className="bin-view-section">
                     <h3 className="bin-view-section-title">
                       <svg className="bin-view-section-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -179,7 +150,7 @@ const BinViewPage = () => {
                       Request Body
                     </h3>
                     <div className="bin-view-body-block">
-                      <pre>{prettyJson(request.body.raw)}</pre>
+                      <pre>{JSON.stringify(request.body, null, 2)}</pre>
                     </div>
                   </section>
                 )}

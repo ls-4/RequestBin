@@ -9,7 +9,7 @@ const BinsPage = () => {
   const [urlInput, setUrlInput] = useState<string>(generateBinId());
 
   const basketKeys = Object.keys(localStorage).filter((key) =>
-    key.startsWith(BINS_STORAGE_PREFIX)
+    key.startsWith(BINS_STORAGE_PREFIX),
   );
 
   return (
@@ -22,7 +22,10 @@ const BinsPage = () => {
             try {
               const authToken = crypto.randomUUID();
               await createBin(urlInput, authToken);
-              localStorage.setItem(`${BINS_STORAGE_PREFIX}${urlInput}`, authToken);
+              localStorage.setItem(
+                `${BINS_STORAGE_PREFIX}${urlInput}`,
+                authToken,
+              );
               setUrlInput(generateBinId());
             } catch (error: unknown) {
               alert("Failed to create a new bin.");
@@ -39,17 +42,17 @@ const BinsPage = () => {
           />
           <button type="submit">Create New Bin</button>
         </form>
-          <h2>My Baskets</h2>
-          <ul>
-            {basketKeys.map((key) => {
-              const binId = key.replace(BINS_STORAGE_PREFIX, "");
-              return (
-                <li key={key}>
-                  <Link to={`/bins/${binId}`}>{binId}</Link>
-                </li>
-              );
-            })}
-          </ul>
+        <h2>My Baskets</h2>
+        <ul>
+          {basketKeys.map((key) => {
+            const binId = key.replace(BINS_STORAGE_PREFIX, "");
+            return (
+              <li key={key}>
+                <Link to={`/bins/${binId}`}>{binId}</Link>
+              </li>
+            );
+          })}
+        </ul>
       </div>
     </>
   );
