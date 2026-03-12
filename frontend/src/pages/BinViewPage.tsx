@@ -63,7 +63,8 @@ const BinViewPage = () => {
 
         {/* Bin info */}
         <div className="bin-view-info">
-          <span className="bin-view-info-label">Bin Route: {bin.bin_route}</span>
+          <span className="bin-view-info-label">Bin Route:</span>
+          <span className="bin-view-info-url">{bin.bin_route}</span>
           <span className="bin-view-info-divider">|</span>
           <span className="bin-view-info-label">Send URL:</span>
           <span className="bin-view-info-url">{bin.send_url}</span>
