@@ -25,14 +25,35 @@ const BinsPage = () => {
   const navigate = useNavigate();
   const { orderedBins, addBin, removeBin } = useBinOrder();
 
+  const BIN_ROUTE_PATTERN = /^[a-zA-Z0-9_-]{3,64}$/;
+
   const handleCreateBin = async (): Promise<void> => {
     const createdRoute = urlInput;
+    const trimmed = createdRoute.trim();
+    if (trimmed.length === 0) {
+      alert("Bin URL cannot be empty.");
+      return;
+    }
+    if (trimmed.length > 64) {
+      alert("Bin URL must be 64 characters or fewer.");
+      return;
+    }
+    if (!BIN_ROUTE_PATTERN.test(trimmed)) {
+      alert(
+        "Bin URL can only contain letters, numbers, hyphens, and underscores.",
+      );
+      return;
+    }
+    if (trimmed !== createdRoute) {
+      setUrlInput(trimmed);
+    }
+
     try {
       setIsCreating(true);
-      const response = await createBin(urlInput);
-      localStorage.setItem(`${BINS_STORAGE_PREFIX}${urlInput}`, response.token);
-      addBin(urlInput);
-      setCreatedBin({ route: createdRoute, token: response.token });
+      const response = await createBin(trimmed);
+      localStorage.setItem(`${BINS_STORAGE_PREFIX}${trimmed}`, response.token);
+      addBin(trimmed);
+      setCreatedBin({ route: trimmed, token: response.token });
       setUrlInput(generateBinId());
       setBinsVersion((version) => version + 1);
     } catch (error: unknown) {
