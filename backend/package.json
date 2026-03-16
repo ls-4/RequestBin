@@ -9,7 +9,8 @@
     "build": "tsc",
     "start": "node dist/index.js",
     "test": "vitest run",
-    "dbtest": "tsx ./src/services/dbtest.ts"
+    "dbtest": "tsx ./src/services/dbtest.ts",
+    "cleanup": "tsx ./src/services/cleanup.ts"
   },
   "keywords": [],
   "author": "",
@@ -17,6 +18,7 @@
   "dependencies": {
     "cors": "^2.8.6",
     "dotenv": "^17.3.1",
+    "dotenv-cli": "^11.0.0",
     "express": "^5.2.1",
     "http": "^0.0.1-security",
     "mongoose": "^8.23.0",

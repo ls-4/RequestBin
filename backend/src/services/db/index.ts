@@ -69,6 +69,17 @@ const db = {
       // Delete the bin from PostgreSQL 
       return binQueries.delete(id);
     },
+
+    // Delete old bins
+    async deleteOlderThan(hours: number): Promise<number> {
+      const bins = await binQueries.getOlderThan(hours);
+      const binIds = bins.map(bin => bin.id);
+      if (binIds.length === 0) return 0;
+
+      await Promise.all(binIds.map(id => this.delete(id)));
+
+      return binIds.length;
+    },
   },
 
   // Request operations

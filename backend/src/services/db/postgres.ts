@@ -90,6 +90,15 @@ export const binQueries = {
     const result = await pgPool.query('DELETE FROM bins WHERE id = $1', [id]);
     return (result.rowCount ?? 0) > 0;
   },
+
+  // Get all bins older than a specified number of hours
+  async getOlderThan(hours: number): Promise<Bin[]> {
+    const result = await pgPool.query(
+      `SELECT * FROM bins WHERE created_at < NOW() - INTERVAL '1 hour' * $1`,
+      [hours]
+    );
+    return result.rows;
+  },
 };
 
 // Request operations
@@ -136,5 +145,14 @@ export const requestQueries = {
       bin_id,
     ]);
     return result.rowCount ?? 0;
+  },
+
+  // Get all bins older than a specified number of hours
+  async getBinsOlderThan(hours: number): Promise<Bin[]> {
+    const result = await pgPool.query(
+      'SELECT * FROM bins WHERE created_at < NOW() - INTERVAL \'$1 hours\'',
+      [hours]
+    );
+    return result.rows;
   },
 };
